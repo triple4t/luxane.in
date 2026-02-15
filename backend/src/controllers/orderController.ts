@@ -172,7 +172,7 @@ export const getOrder = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const order = await prisma.order.findUnique({
-      where: { id },
+      where: { id: String(id) },
       include: {
         orderItems: {
           include: {
@@ -209,7 +209,7 @@ export const getOrderTracking = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const order = await prisma.order.findUnique({
-      where: { id },
+      where: { id: String(id) },
       select: {
         id: true,
         userId: true,
@@ -368,7 +368,7 @@ export const cancelOrder = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const order = await prisma.order.findUnique({
-      where: { id },
+      where: { id: String(id) },
       include: {
         orderItems: {
           include: {
@@ -397,7 +397,7 @@ export const cancelOrder = async (req: Request, res: Response) => {
     // Update order status and restore stock
     await prisma.$transaction(async (tx) => {
       await tx.order.update({
-        where: { id },
+        where: { id: String(id) },
         data: { status: 'CANCELLED' },
       });
 
@@ -497,7 +497,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     }
 
     const order = await prisma.order.findUnique({
-      where: { id },
+      where: { id: String(id) },
     });
 
     if (!order) {
@@ -505,7 +505,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     }
 
     const updatedOrder = await prisma.order.update({
-      where: { id },
+      where: { id: String(id) },
       data: { status },
       include: {
         orderItems: {

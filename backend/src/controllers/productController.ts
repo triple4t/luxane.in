@@ -34,10 +34,10 @@ export const getProducts = async (req: Request, res: Response) => {
 
     if (category) {
       // Support multiple categories (comma-separated or array)
-      const categories = Array.isArray(category) 
-        ? category 
+      const categories = Array.isArray(category)
+        ? category
         : (category as string).split(',').map((c: string) => c.trim());
-      
+
       if (categories.length === 1) {
         where.category = categories[0];
       } else if (categories.length > 1) {
@@ -50,7 +50,7 @@ export const getProducts = async (req: Request, res: Response) => {
       const collections = Array.isArray(collection)
         ? collection
         : (collection as string).split(',').map((c: string) => c.trim());
-      
+
       if (collections.length === 1) {
         where.collection = collections[0];
       } else if (collections.length > 1) {
@@ -126,7 +126,7 @@ export const getProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { id: String(id) },
     });
 
     if (!product) {
@@ -149,7 +149,7 @@ export const getProductBySlug = async (req: Request, res: Response) => {
     const { slug } = req.params;
 
     const product = await prisma.product.findUnique({
-      where: { slug },
+      where: { slug: String(slug) },
     });
 
     if (!product) {
@@ -297,12 +297,12 @@ export const updateProduct = async (req: Request, res: Response) => {
     // If name is being updated, regenerate slug
     if (updateData.name) {
       updateData.slug = generateSlug(updateData.name);
-      
+
       // Check if new slug conflicts with another product
       const existingProduct = await prisma.product.findFirst({
         where: {
           slug: updateData.slug,
-          NOT: { id },
+          NOT: { id: String(id) },
         },
       });
 
@@ -323,7 +323,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     }
 
     const product = await prisma.product.update({
-      where: { id },
+      where: { id: String(id) },
       data: updateData,
     });
 
@@ -346,7 +346,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     await prisma.product.delete({
-      where: { id },
+      where: { id: String(id) },
     });
 
     res.json({
@@ -374,7 +374,7 @@ export const uploadProductImage = async (req: Request, res: Response) => {
 
     // Get current product to preserve existing images
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { id: String(id) },
       select: { image: true },
     });
 
@@ -386,7 +386,7 @@ export const uploadProductImage = async (req: Request, res: Response) => {
     const updatedImages = [...(product.image || []), imageUrl];
 
     const updatedProduct = await prisma.product.update({
-      where: { id },
+      where: { id: String(id) },
       data: { image: updatedImages },
     });
 
@@ -414,7 +414,7 @@ export const uploadProductImages = async (req: Request, res: Response) => {
 
     // Get current product to preserve existing images
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { id: String(id) },
       select: { image: true },
     });
 
@@ -423,7 +423,7 @@ export const uploadProductImages = async (req: Request, res: Response) => {
     }
 
     // Upload all images to Cloudinary
-    const uploadPromises = imageFiles.map((file: Express.Multer.File) =>
+    const uploadPromises = (files as Express.Multer.File[]).map((file) =>
       uploadToCloudinary(file, 'jewelcraft/products')
     );
 
@@ -433,7 +433,7 @@ export const uploadProductImages = async (req: Request, res: Response) => {
     const updatedImages = [...(product.image || []), ...uploadedUrls];
 
     const updatedProduct = await prisma.product.update({
-      where: { id },
+      where: { id: String(id) },
       data: { image: updatedImages },
     });
 
@@ -460,7 +460,7 @@ export const deleteProductImage = async (req: Request, res: Response) => {
 
     // Get current product
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { id: String(id) },
       select: { image: true },
     });
 
@@ -477,7 +477,7 @@ export const deleteProductImage = async (req: Request, res: Response) => {
     }
 
     const updatedProduct = await prisma.product.update({
-      where: { id },
+      where: { id: String(id) },
       data: { image: updatedImages },
     });
 

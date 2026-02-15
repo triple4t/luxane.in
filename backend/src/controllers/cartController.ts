@@ -115,7 +115,7 @@ export const updateCartItem = async (req: Request, res: Response) => {
 
     // Get cart item
     const cartItem = await prisma.cartItem.findUnique({
-      where: { id: itemId },
+      where: { id: String(itemId) },
       include: { product: true },
     });
 
@@ -133,7 +133,7 @@ export const updateCartItem = async (req: Request, res: Response) => {
     }
 
     const updatedItem = await prisma.cartItem.update({
-      where: { id: itemId },
+      where: { id: String(itemId) },
       data: { quantity },
       include: {
         product: true,
@@ -157,7 +157,7 @@ export const removeFromCart = async (req: Request, res: Response) => {
     const { itemId } = req.params;
 
     const cartItem = await prisma.cartItem.findUnique({
-      where: { id: itemId },
+      where: { id: String(itemId) },
     });
 
     if (!cartItem) {
@@ -169,7 +169,7 @@ export const removeFromCart = async (req: Request, res: Response) => {
     }
 
     await prisma.cartItem.delete({
-      where: { id: itemId },
+      where: { id: String(itemId) },
     });
 
     res.json({
