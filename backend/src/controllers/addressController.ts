@@ -64,7 +64,7 @@ export const updateAddress = async (req: Request, res: Response) => {
 
     // Check if address belongs to user
     const address = await prisma.address.findUnique({
-      where: { id },
+      where: { id: String(id) },
     });
 
     if (!address) {
@@ -80,14 +80,14 @@ export const updateAddress = async (req: Request, res: Response) => {
       await prisma.address.updateMany({
         where: {
           userId,
-          NOT: { id },
+          NOT: { id: String(id) },
         },
         data: { isDefault: false },
       });
     }
 
     const updatedAddress = await prisma.address.update({
-      where: { id },
+      where: { id: String(id) },
       data: {
         ...updateData,
         isDefault: isDefault !== undefined ? isDefault : address.isDefault,
@@ -111,7 +111,7 @@ export const deleteAddress = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const address = await prisma.address.findUnique({
-      where: { id },
+      where: { id: String(id) },
     });
 
     if (!address) {
@@ -123,7 +123,7 @@ export const deleteAddress = async (req: Request, res: Response) => {
     }
 
     await prisma.address.delete({
-      where: { id },
+      where: { id: String(id) },
     });
 
     res.json({

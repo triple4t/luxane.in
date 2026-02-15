@@ -67,7 +67,7 @@ export const createRazorpayOrder = async (req: Request, res: Response) => {
       success: true,
       data: {
         razorpayOrderId: razorpayOrder.id,
-        amount: razorpayOrder.amount / 100, // Return in rupees
+        amount: Number(razorpayOrder.amount) / 100, // Return in rupees
         currency: razorpayOrder.currency,
         key: process.env.RAZORPAY_KEY_ID,
       },
