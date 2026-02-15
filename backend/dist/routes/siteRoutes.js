@@ -1,0 +1,40 @@
+import { Router } from 'express';
+import { getSiteSettings, updateSiteSetting, getNavigationLinks, getAllNavigationLinks, createNavigationLink, updateNavigationLink, deleteNavigationLink, getAnnouncements, getAllAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement, getHeroSection, getAllHeroSections, createHeroSection, updateHeroSection, deleteHeroSection, getFooterSections, getAllFooterSections, createFooterSection, updateFooterSection, deleteFooterSection, getSocialLinks, getAllSocialLinks, createSocialLink, updateSocialLink, deleteSocialLink, getHomepageSections, getAllHomepageSections, createHomepageSection, updateHomepageSection, deleteHomepageSection, } from '../controllers/siteController.js';
+import { authenticate, isAdmin } from '../middleware/auth.js';
+const router = Router();
+// Public routes
+router.get('/settings', getSiteSettings);
+router.get('/navigation', getNavigationLinks);
+router.get('/announcements', getAnnouncements);
+router.get('/hero', getHeroSection);
+router.get('/footer', getFooterSections);
+router.get('/social', getSocialLinks);
+router.get('/homepage-sections', getHomepageSections);
+// Admin routes - Get all (including inactive)
+router.get('/admin/navigation', authenticate, isAdmin, getAllNavigationLinks);
+router.get('/admin/announcements', authenticate, isAdmin, getAllAnnouncements);
+router.get('/admin/hero', authenticate, isAdmin, getAllHeroSections);
+router.get('/admin/footer', authenticate, isAdmin, getAllFooterSections);
+router.get('/admin/social', authenticate, isAdmin, getAllSocialLinks);
+router.get('/admin/homepage-sections', authenticate, isAdmin, getAllHomepageSections);
+// Admin routes - CRUD
+router.put('/settings/:key', authenticate, isAdmin, updateSiteSetting);
+router.post('/navigation', authenticate, isAdmin, createNavigationLink);
+router.put('/navigation/:id', authenticate, isAdmin, updateNavigationLink);
+router.delete('/navigation/:id', authenticate, isAdmin, deleteNavigationLink);
+router.post('/announcements', authenticate, isAdmin, createAnnouncement);
+router.put('/announcements/:id', authenticate, isAdmin, updateAnnouncement);
+router.delete('/announcements/:id', authenticate, isAdmin, deleteAnnouncement);
+router.post('/hero', authenticate, isAdmin, createHeroSection);
+router.put('/hero/:id', authenticate, isAdmin, updateHeroSection);
+router.delete('/hero/:id', authenticate, isAdmin, deleteHeroSection);
+router.post('/footer', authenticate, isAdmin, createFooterSection);
+router.put('/footer/:id', authenticate, isAdmin, updateFooterSection);
+router.delete('/footer/:id', authenticate, isAdmin, deleteFooterSection);
+router.post('/social', authenticate, isAdmin, createSocialLink);
+router.put('/social/:id', authenticate, isAdmin, updateSocialLink);
+router.delete('/social/:id', authenticate, isAdmin, deleteSocialLink);
+router.post('/homepage-sections', authenticate, isAdmin, createHomepageSection);
+router.put('/homepage-sections/:id', authenticate, isAdmin, updateHomepageSection);
+router.delete('/homepage-sections/:id', authenticate, isAdmin, deleteHomepageSection);
+export default router;
