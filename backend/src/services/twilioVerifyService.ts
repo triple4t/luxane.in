@@ -55,6 +55,7 @@ export async function verifyCode(phone: string, code: string): Promise<boolean> 
     throw new Error('Twilio Verify Service SID not configured (TWILIO_VERIFY_SERVICE_SID)');
   }
   const to = toE164(phone);
+  console.log(`[Twilio] Verifying code for phone: ${to}, code: ${code}`);
   try {
     const res = await axios.post(
       `${VERIFY_BASE}/VerificationCheck`,
@@ -66,8 +67,10 @@ export async function verifyCode(phone: string, code: string): Promise<boolean> 
         },
       }
     );
+    console.log(`[Twilio] Verification response:`, res.data);
     return res.data?.status === 'approved';
   } catch (err: any) {
+    console.error(`[Twilio] Verification error for ${to}:`, err.response?.data || err.message);
     if (err.response?.status === 404 || err.response?.data?.code === 60200) {
       return false;
     }

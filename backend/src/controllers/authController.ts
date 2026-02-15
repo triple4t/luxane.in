@@ -49,6 +49,7 @@ export const register = async (req: Request, res: Response) => {
 
         const approved = await verifyCode(cleanPhone, String(code).replace(/\D/g, ''));
         if (!approved) {
+            console.error('[Registration] OTP verification failed for phone:', cleanPhone);
             return res.status(400).json({ error: 'Invalid or expired verification code' });
         }
 
