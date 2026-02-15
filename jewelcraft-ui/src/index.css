@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 98%;
+    --foreground: 30 10% 15%;
+
+    --card: 40 30% 99%;
+    --card-foreground: 30 10% 15%;
+
+    --popover: 40 30% 99%;
+    --popover-foreground: 30 10% 15%;
+
+    --primary: 30 25% 20%;
+    --primary-foreground: 40 30% 98%;
+
+    --secondary: 35 30% 94%;
+    --secondary-foreground: 30 25% 20%;
+
+    --muted: 35 15% 90%;
+    --muted-foreground: 30 10% 45%;
+
+    --accent: 38 70% 50%;
+    --accent-foreground: 40 30% 98%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 85% 97%;
+
+    --border: 35 20% 88%;
+    --input: 35 20% 88%;
+    --ring: 38 70% 50%;
+
+    --radius: 0.25rem;
+
+    --sidebar-background: 40 30% 99%;
+    --sidebar-foreground: 30 10% 15%;
+    --sidebar-primary: 30 25% 20%;
+    --sidebar-primary-foreground: 40 30% 98%;
+    --sidebar-accent: 35 30% 94%;
+    --sidebar-accent-foreground: 30 25% 20%;
+    --sidebar-border: 35 20% 88%;
+    --sidebar-ring: 38 70% 50%;
+
+    --chart-1: 38 70% 50%;
+    --chart-2: 30 40% 40%;
+    --chart-3: 35 30% 60%;
+    --chart-4: 40 50% 70%;
+    --chart-5: 25 20% 30%;
+
+    --gold: 38 70% 50%;
+    --gold-light: 40 60% 70%;
+    --gold-dark: 35 80% 35%;
+    --cream: 40 30% 96%;
+    --cream-dark: 35 25% 92%;
+
+    --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Cormorant Garamond', ui-serif, Georgia, serif;
+
+    --shadow-soft: 0 2px 15px -3px hsl(30 25% 20% / 0.08);
+    --shadow-elegant: 0 8px 30px -10px hsl(30 25% 20% / 0.12);
+    --shadow-hover: 0 15px 40px -15px hsl(30 25% 20% / 0.15);
+  }
+
+  .dark {
+    --background: 30 15% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 30 15% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 30 15% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 38 70% 55%;
+    --primary-foreground: 30 15% 8%;
+
+    --secondary: 30 15% 18%;
+    --secondary-foreground: 40 20% 95%;
+
+    --muted: 30 15% 22%;
+    --muted-foreground: 40 15% 65%;
+
+    --accent: 38 70% 55%;
+    --accent-foreground: 30 15% 8%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 85% 97%;
+
+    --border: 30 15% 22%;
+    --input: 30 15% 22%;
+    --ring: 38 70% 55%;
+
+    --gold: 38 70% 55%;
+    --gold-light: 40 60% 65%;
+    --gold-dark: 35 80% 45%;
+    --cream: 30 15% 12%;
+    --cream-dark: 30 15% 18%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .gold-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold-dark)), hsl(var(--gold)), hsl(var(--gold-light)));
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold-dark)), hsl(var(--gold)), hsl(var(--gold-light)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-1;
+    box-shadow: var(--shadow-hover);
+  }
+
+  .image-zoom {
+    @apply overflow-hidden;
+  }
+
+  .image-zoom img {
+    @apply transition-transform duration-500 ease-out;
+  }
+
+  .image-zoom:hover img {
+    @apply scale-110;
+  }
+
+  .underline-animated {
+    @apply relative;
+  }
+
+  .underline-animated::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-px bg-foreground origin-right scale-x-0 transition-transform duration-300;
+  }
+
+  .underline-animated:hover::after {
+    @apply origin-left scale-x-100;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
