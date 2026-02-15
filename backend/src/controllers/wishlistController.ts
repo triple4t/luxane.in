@@ -86,7 +86,7 @@ export const removeFromWishlist = async (req: Request, res: Response) => {
       where: {
         userId_productId: {
           userId,
-          productId,
+          productId: String(productId),
         },
       },
     });
@@ -99,7 +99,7 @@ export const removeFromWishlist = async (req: Request, res: Response) => {
       where: {
         userId_productId: {
           userId,
-          productId,
+          productId: String(productId),
         },
       },
     });

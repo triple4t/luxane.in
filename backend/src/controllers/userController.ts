@@ -41,7 +41,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
     }
 
     const user = await prisma.user.update({
-      where: { id },
+      where: { id: String(id) },
       data: { role },
       select: {
         id: true,
@@ -68,10 +68,10 @@ export const deleteUser = async (req: Request, res: Response) => {
 
     await prisma.$transaction(async (tx) => {
       // Delete user's orders first (Payment and OrderItem cascade from Order)
-      await tx.order.deleteMany({ where: { userId: id } });
+      await tx.order.deleteMany({ where: { userId: String(id) } });
       // Then delete user (CartItem, Wishlist, Address, Review cascade from User)
       await tx.user.delete({
-        where: { id },
+        where: { id: String(id) },
       });
     });
 

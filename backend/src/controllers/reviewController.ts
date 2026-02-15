@@ -93,7 +93,7 @@ export const getProductReviews = async (req: Request, res: Response) => {
     const { productId } = req.params;
 
     const reviews = await prisma.review.findMany({
-      where: { productId },
+      where: { productId: String(productId) },
       include: {
         user: {
           select: {
@@ -126,7 +126,7 @@ export const getUserReview = async (req: Request, res: Response) => {
     const review = await prisma.review.findUnique({
       where: {
         productId_userId: {
-          productId,
+          productId: String(productId),
           userId,
         },
       },
@@ -157,7 +157,7 @@ export const deleteReview = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const review = await prisma.review.findUnique({
-      where: { id },
+      where: { id: String(id) },
     });
 
     if (!review) {
@@ -171,7 +171,7 @@ export const deleteReview = async (req: Request, res: Response) => {
     const productId = review.productId;
 
     await prisma.review.delete({
-      where: { id },
+      where: { id: String(id) },
     });
 
     // Recalculate product average rating

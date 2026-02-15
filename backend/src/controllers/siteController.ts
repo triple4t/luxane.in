@@ -9,8 +9,8 @@ export const getSiteSettings = async (req: Request, res: Response) => {
     const settingsObj: any = {};
     settings.forEach(setting => {
       try {
-        settingsObj[setting.key] = setting.type === 'json' 
-          ? JSON.parse(setting.value) 
+        settingsObj[setting.key] = setting.type === 'json'
+          ? JSON.parse(setting.value)
           : setting.value;
       } catch {
         settingsObj[setting.key] = setting.value;
@@ -27,11 +27,11 @@ export const updateSiteSetting = async (req: Request, res: Response) => {
   try {
     const { key } = req.params;
     const { value, type, category, description } = req.body;
-    
+
     const settingValue = type === 'json' ? JSON.stringify(value) : String(value);
-    
+
     const setting = await prisma.siteSettings.upsert({
-      where: { key },
+      where: { key: String(key) },
       update: {
         value: settingValue,
         type: type || 'text',
@@ -39,7 +39,7 @@ export const updateSiteSetting = async (req: Request, res: Response) => {
         description,
       },
       create: {
-        key,
+        key: String(key),
         value: settingValue,
         type: type || 'text',
         category: category || 'general',
@@ -92,7 +92,7 @@ export const updateNavigationLink = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const link = await prisma.navigationLink.update({
-      where: { id },
+      where: { id: String(id) },
       data: req.body,
     });
     res.json({ success: true, data: link });
@@ -104,7 +104,7 @@ export const updateNavigationLink = async (req: Request, res: Response) => {
 export const deleteNavigationLink = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.navigationLink.delete({ where: { id } });
+    await prisma.navigationLink.delete({ where: { id: String(id) } });
     res.json({ success: true, message: 'Link deleted' });
   } catch (error) {
     throw new AppError('Failed to delete navigation link', 500);
@@ -150,7 +150,7 @@ export const updateAnnouncement = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const announcement = await prisma.announcement.update({
-      where: { id },
+      where: { id: String(id) },
       data: req.body,
     });
     res.json({ success: true, data: announcement });
@@ -162,7 +162,7 @@ export const updateAnnouncement = async (req: Request, res: Response) => {
 export const deleteAnnouncement = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.announcement.delete({ where: { id } });
+    await prisma.announcement.delete({ where: { id: String(id) } });
     res.json({ success: true, message: 'Announcement deleted' });
   } catch (error) {
     throw new AppError('Failed to delete announcement', 500);
@@ -202,7 +202,7 @@ export const createHeroSection = async (req: Request, res: Response) => {
         data: { isActive: false },
       });
     }
-    
+
     const hero = await prisma.heroSection.create({
       data: req.body,
     });
@@ -215,20 +215,20 @@ export const createHeroSection = async (req: Request, res: Response) => {
 export const updateHeroSection = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    
+
     // If activating this hero, deactivate others
     if (req.body.isActive === true) {
       await prisma.heroSection.updateMany({
         where: {
           isActive: true,
-          NOT: { id },
+          NOT: { id: String(id) },
         },
         data: { isActive: false },
       });
     }
-    
+
     const hero = await prisma.heroSection.update({
-      where: { id },
+      where: { id: String(id) },
       data: req.body,
     });
     res.json({ success: true, data: hero });
@@ -240,7 +240,7 @@ export const updateHeroSection = async (req: Request, res: Response) => {
 export const deleteHeroSection = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.heroSection.delete({ where: { id } });
+    await prisma.heroSection.delete({ where: { id: String(id) } });
     res.json({ success: true, message: 'Hero section deleted' });
   } catch (error) {
     throw new AppError('Failed to delete hero section', 500);
@@ -297,18 +297,18 @@ export const updateFooterSection = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const section = await prisma.footerSection.update({
-      where: { id },
+      where: { id: String(id) },
       data: {
         ...req.body,
         links: req.body.links ? JSON.stringify(req.body.links) : undefined,
       },
     });
-    res.json({ 
-      success: true, 
-      data: { 
-        ...section, 
-        links: req.body.links ? req.body.links : JSON.parse(section.links || '[]') 
-      } 
+    res.json({
+      success: true,
+      data: {
+        ...section,
+        links: req.body.links ? req.body.links : JSON.parse(section.links || '[]')
+      }
     });
   } catch (error) {
     throw new AppError('Failed to update footer section', 500);
@@ -318,7 +318,7 @@ export const updateFooterSection = async (req: Request, res: Response) => {
 export const deleteFooterSection = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.footerSection.delete({ where: { id } });
+    await prisma.footerSection.delete({ where: { id: String(id) } });
     res.json({ success: true, message: 'Footer section deleted' });
   } catch (error) {
     throw new AppError('Failed to delete footer section', 500);
@@ -364,7 +364,7 @@ export const updateSocialLink = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const link = await prisma.socialLink.update({
-      where: { id },
+      where: { id: String(id) },
       data: req.body,
     });
     res.json({ success: true, data: link });
@@ -376,7 +376,7 @@ export const updateSocialLink = async (req: Request, res: Response) => {
 export const deleteSocialLink = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.socialLink.delete({ where: { id } });
+    await prisma.socialLink.delete({ where: { id: String(id) } });
     res.json({ success: true, message: 'Social link deleted' });
   } catch (error) {
     throw new AppError('Failed to delete social link', 500);
@@ -433,18 +433,18 @@ export const updateHomepageSection = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const section = await prisma.homepageSection.update({
-      where: { id },
+      where: { id: String(id) },
       data: {
         ...req.body,
         config: req.body.config ? JSON.stringify(req.body.config) : undefined,
       },
     });
-    res.json({ 
-      success: true, 
-      data: { 
-        ...section, 
-        config: req.body.config ? req.body.config : JSON.parse(section.config || '{}') 
-      } 
+    res.json({
+      success: true,
+      data: {
+        ...section,
+        config: req.body.config ? req.body.config : JSON.parse(section.config || '{}')
+      }
     });
   } catch (error) {
     throw new AppError('Failed to update homepage section', 500);
@@ -454,7 +454,7 @@ export const updateHomepageSection = async (req: Request, res: Response) => {
 export const deleteHomepageSection = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.homepageSection.delete({ where: { id } });
+    await prisma.homepageSection.delete({ where: { id: String(id) } });
     res.json({ success: true, message: 'Homepage section deleted' });
   } catch (error) {
     throw new AppError('Failed to delete homepage section', 500);
