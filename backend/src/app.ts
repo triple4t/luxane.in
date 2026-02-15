@@ -22,6 +22,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust proxy - required when behind reverse proxy (Render, Heroku, etc.)
+app.set('trust proxy', 1);
+
 // Security middleware (must be first)
 app.use(helmet({
   contentSecurityPolicy: {
@@ -37,8 +40,8 @@ app.use(helmet({
 
 // CORS
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    credentials: true,
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
 }));
 
 // Logging
@@ -64,10 +67,10 @@ app.use('/api/', (req, res, next) => {
 
 // Health check route
 app.get('/api/health', (req, res) => {
-    res.json({
-        message: 'Server is running!',
-        timestamp: new Date().toISOString()
-    });
+  res.json({
+    message: 'Server is running!',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Routes
