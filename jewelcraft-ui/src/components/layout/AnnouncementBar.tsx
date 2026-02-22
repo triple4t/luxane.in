@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { API_BASE_URL } from "@/lib/api";
 
 export const AnnouncementBar = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -9,7 +10,7 @@ export const AnnouncementBar = () => {
   const { data: announcementsData } = useQuery({
     queryKey: ["announcements"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/announcements");
+      const response = await fetch(`${API_BASE_URL}/site/announcements`);
       return response.json();
     },
   });

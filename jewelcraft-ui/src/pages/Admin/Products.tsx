@@ -13,7 +13,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, X, Upload } from "lucide-react";
-import api from "@/lib/api";
+import api, { API_BASE_URL } from "@/lib/api";
 import { formatPrice } from "@/lib/utils";
 
 const Products = () => {
@@ -45,7 +45,7 @@ const Products = () => {
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await fetch("http://localhost:5001/api/products", {
+      const response = await fetch(`${API_BASE_URL}/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const Products = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
-      const response = await fetch(`http://localhost:5001/api/products/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/products/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ const Products = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const response = await fetch(`http://localhost:5001/api/products/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/products/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

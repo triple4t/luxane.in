@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { API_BASE_URL } from "@/lib/api";
 
 export const HeroSection = () => {
   const { data: heroData } = useQuery({
     queryKey: ["hero"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/hero");
+      const response = await fetch(`${API_BASE_URL}/site/hero`);
       return response.json();
     },
   });

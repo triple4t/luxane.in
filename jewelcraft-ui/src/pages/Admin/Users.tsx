@@ -10,8 +10,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+import { API_BASE_URL } from "@/lib/api";
 
 const Users = () => {
   const queryClient = useQueryClient();
@@ -19,7 +18,7 @@ const Users = () => {
   const { data: users, isLoading } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE}/admin/users`, {
+      const response = await fetch(`${API_BASE_URL}/admin/users`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -32,7 +31,7 @@ const Users = () => {
   const updateRoleMutation = useMutation({
     mutationFn: async ({ id, role }: { id: string; role: string }) => {
       const response = await fetch(
-        `${API_BASE}/admin/users/${id}/role`,
+        `${API_BASE_URL}/admin/users/${id}/role`,
         {
           method: "PUT",
           headers: {
@@ -57,7 +56,7 @@ const Users = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(
-        `${API_BASE}/admin/users/${id}`,
+        `${API_BASE_URL}/admin/users/${id}`,
         {
           method: "DELETE",
           headers: {

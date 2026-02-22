@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import api from "@/lib/api";
+import api, { API_BASE_URL } from "@/lib/api";
 
 const iconMap: Record<string, any> = {
   instagram: Instagram,
@@ -52,7 +52,7 @@ export const Footer = () => {
   const { data: footerSections } = useQuery({
     queryKey: ["footer"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/footer");
+      const response = await fetch(`${API_BASE_URL}/site/footer`);
       return response.json();
     },
   });
@@ -60,7 +60,7 @@ export const Footer = () => {
   const { data: socialLinksData } = useQuery({
     queryKey: ["social"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/social");
+      const response = await fetch(`${API_BASE_URL}/site/social`);
       return response.json();
     },
   });
@@ -68,7 +68,7 @@ export const Footer = () => {
   const { data: siteSettings } = useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/settings");
+      const response = await fetch(`${API_BASE_URL}/site/settings`);
       return response.json();
     },
   });

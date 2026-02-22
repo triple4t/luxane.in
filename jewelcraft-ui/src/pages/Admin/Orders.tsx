@@ -12,6 +12,7 @@ import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import { OrderTrackingBlock } from "@/components/order/OrderTrackingBlock";
+import { API_BASE_URL } from "@/lib/api";
 
 const Orders = () => {
   const queryClient = useQueryClient();
@@ -19,7 +20,7 @@ const Orders = () => {
   const { data: orders, isLoading } = useQuery({
     queryKey: ["admin-orders"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/orders/admin/all", {
+      const response = await fetch(`${API_BASE_URL}/orders/admin/all`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -31,7 +32,7 @@ const Orders = () => {
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       const response = await fetch(
-        `http://localhost:5001/api/orders/admin/${id}/status`,
+        `${API_BASE_URL}/orders/admin/${id}/status`,
         {
           method: "PUT",
           headers: {

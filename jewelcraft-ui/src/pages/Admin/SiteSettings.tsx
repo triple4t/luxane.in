@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import api from "@/lib/api";
+import api, { API_BASE_URL } from "@/lib/api";
 
 const SiteSettings = () => {
   const queryClient = useQueryClient();
@@ -30,7 +30,7 @@ const SiteSettings = () => {
   const { data: siteData } = useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/settings");
+      const response = await fetch(`${API_BASE_URL}/site/settings`);
       return response.json();
     },
     onSuccess: (data) => {
@@ -47,7 +47,7 @@ const SiteSettings = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ key, value }: { key: string; value: string }) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/settings/${key}`,
+        `${API_BASE_URL}/site/settings/${key}`,
         {
           method: "PUT",
           headers: {
@@ -181,7 +181,7 @@ const NavigationManager = () => {
   const { data: links } = useQuery({
     queryKey: ["admin-navigation-links"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/admin/navigation", {
+      const response = await fetch(`${API_BASE_URL}/site/admin/navigation`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -192,7 +192,7 @@ const NavigationManager = () => {
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await fetch("http://localhost:5001/api/site/navigation", {
+      const response = await fetch(`${API_BASE_URL}/site/navigation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -214,7 +214,7 @@ const NavigationManager = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/navigation/${id}`,
+        `${API_BASE_URL}/site/navigation/${id}`,
         {
           method: "PUT",
           headers: {
@@ -238,7 +238,7 @@ const NavigationManager = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/navigation/${id}`,
+        `${API_BASE_URL}/site/navigation/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -412,7 +412,7 @@ const AnnouncementsManager = () => {
   const { data: announcements } = useQuery({
     queryKey: ["admin-announcements"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/admin/announcements", {
+      const response = await fetch(`${API_BASE_URL}/site/admin/announcements`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -423,7 +423,7 @@ const AnnouncementsManager = () => {
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await fetch("http://localhost:5001/api/site/announcements", {
+      const response = await fetch(`${API_BASE_URL}/site/announcements`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -445,7 +445,7 @@ const AnnouncementsManager = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/announcements/${id}`,
+        `${API_BASE_URL}/site/announcements/${id}`,
         {
           method: "PUT",
           headers: {
@@ -469,7 +469,7 @@ const AnnouncementsManager = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/announcements/${id}`,
+        `${API_BASE_URL}/site/announcements/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -641,7 +641,7 @@ const HeroManager = () => {
   const { data: heroes } = useQuery({
     queryKey: ["admin-hero"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/admin/hero", {
+      const response = await fetch(`${API_BASE_URL}/site/admin/hero`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -652,7 +652,7 @@ const HeroManager = () => {
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await fetch("http://localhost:5001/api/site/hero", {
+      const response = await fetch(`${API_BASE_URL}/site/hero`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -684,7 +684,7 @@ const HeroManager = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/hero/${id}`,
+        `${API_BASE_URL}/site/hero/${id}`,
         {
           method: "PUT",
           headers: {
@@ -708,7 +708,7 @@ const HeroManager = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/hero/${id}`,
+        `${API_BASE_URL}/site/hero/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -940,7 +940,7 @@ const FooterManager = () => {
   const { data: sections } = useQuery({
     queryKey: ["admin-footer"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/admin/footer", {
+      const response = await fetch(`${API_BASE_URL}/site/admin/footer`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -951,7 +951,7 @@ const FooterManager = () => {
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await fetch("http://localhost:5001/api/site/footer", {
+      const response = await fetch(`${API_BASE_URL}/site/footer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -978,7 +978,7 @@ const FooterManager = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/footer/${id}`,
+        `${API_BASE_URL}/site/footer/${id}`,
         {
           method: "PUT",
           headers: {
@@ -1002,7 +1002,7 @@ const FooterManager = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/footer/${id}`,
+        `${API_BASE_URL}/site/footer/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -1216,7 +1216,7 @@ const SocialLinksManager = () => {
   const { data: links } = useQuery({
     queryKey: ["admin-social"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/admin/social", {
+      const response = await fetch(`${API_BASE_URL}/site/admin/social`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -1227,7 +1227,7 @@ const SocialLinksManager = () => {
 
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await fetch("http://localhost:5001/api/site/social", {
+      const response = await fetch(`${API_BASE_URL}/site/social`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1255,7 +1255,7 @@ const SocialLinksManager = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/social/${id}`,
+        `${API_BASE_URL}/site/social/${id}`,
         {
           method: "PUT",
           headers: {
@@ -1279,7 +1279,7 @@ const SocialLinksManager = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(
-        `http://localhost:5001/api/site/social/${id}`,
+        `${API_BASE_URL}/site/social/${id}`,
         {
           method: "DELETE",
           headers: {

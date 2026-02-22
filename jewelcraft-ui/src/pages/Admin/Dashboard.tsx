@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Package, Users, ShoppingCart, DollarSign } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { API_BASE_URL } from "@/lib/api";
 
 const Dashboard = () => {
   const { data: stats, isLoading } = useQuery({
     queryKey: ["admin-dashboard"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/admin/dashboard", {
+      const response = await fetch(`${API_BASE_URL}/admin/dashboard`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

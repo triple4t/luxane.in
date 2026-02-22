@@ -14,6 +14,7 @@ import { AnnouncementBar } from "./AnnouncementBar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useQuery } from "@tanstack/react-query";
+import { API_BASE_URL } from "@/lib/api";
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,7 +26,7 @@ export const Header = () => {
   const { data: navData } = useQuery({
     queryKey: ["navigation-links"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/navigation");
+      const response = await fetch(`${API_BASE_URL}/site/navigation`);
       return response.json();
     },
   });
@@ -33,7 +34,7 @@ export const Header = () => {
   const { data: siteSettings } = useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:5001/api/site/settings");
+      const response = await fetch(`${API_BASE_URL}/site/settings`);
       return response.json();
     },
   });
